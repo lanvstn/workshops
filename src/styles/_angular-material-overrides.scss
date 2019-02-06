@@ -1,0 +1,48 @@
+// see materialtheme.scss for base theme configuration
+
+mat-card.mat-card {
+    color: black;
+
+    .mat-card-title {
+        @include mat-elevation(1);
+        margin-left: -16px;
+        margin-right: -16px;
+        margin-top: -16px;
+        margin-bottom: 16px;
+        padding: 16px 16px 8px 16px;
+        border-radius: 4px 4px 0 0;
+        background-color: $primary-color;
+        color: white;
+    }
+}
+
+.mat-step-header .mat-step-icon-selected {
+    background-color: $accent-color;
+    color: black;
+}
+
+// Fix icon centering in buttons
+.mat-button-wrapper i.material-icons {
+    margin-top: -4px;
+}
+
+mat-toolbar.mat-toolbar {
+    padding: 0 10%;
+}
+
+.mat-dialog-container {
+    mat-form-field,
+    .mat-dialog-content,
+    .mat-table {
+        width: 100%;
+    }
+
+    .mat-dialog-actions{
+        @extend %buttons-right;
+    }
+}
+
+.mat-toolbar-main {
+    // !important needed to override all media queries
+    height: 64px !important;
+}

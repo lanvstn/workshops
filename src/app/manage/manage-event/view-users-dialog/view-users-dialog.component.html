@@ -1,0 +1,49 @@
+<div [ngSwitch]="data.view">
+  <h1 *ngSwitchCase="'all'" mat-dialog-title>Alle studenten</h1>
+  <h1 *ngSwitchCase="'unregistered'" mat-dialog-title>Studenten zonder registratie</h1>
+  <h1 *ngSwitchDefault mat-dialog-title>Studenten</h1>
+</div>
+
+<mat-dialog-content>
+  <table mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="status">
+        <th class="user_reg_column" mat-header-cell *matHeaderCellDef><th>
+        <td mat-cell *matCellDef="let user">
+          <div *ngIf="user.registrations.length > 0; then userRegistered; else userUnregistered"></div>
+          <ng-template #userRegistered>
+            <i class="material-icons">check_circle</i>
+          </ng-template>
+          <ng-template #userUnregistered>
+            <i class="material-icons">highlight_off</i>            
+          </ng-template>
+        </td>
+    </ng-container> 
+
+    <ng-container matColumnDef="full_name">
+      <th mat-header-cell *matHeaderCellDef>Naam<th>
+      <td mat-cell *matCellDef="let user"> {{user.full_name}} </td>
+    </ng-container> 
+
+    <ng-container matColumnDef="user_class">
+      <th mat-header-cell *matHeaderCellDef>Klas<th>
+      <td mat-cell *matCellDef="let user"> {{user.user_class}} </td>
+    </ng-container> 
+
+    <ng-container matColumnDef="target_group">
+      <th mat-header-cell *matHeaderCellDef>Doelgroep<th>
+      <td mat-cell *matCellDef="let user"> {{user.targetGroup}} </td>
+    </ng-container> 
+
+    <ng-container matColumnDef="identity">
+      <th mat-header-cell *matHeaderCellDef>Identiteit<th>
+      <td mat-cell *matCellDef="let user"> {{user.identity}} </td>
+    </ng-container>  
+
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+
+  </table>
+</mat-dialog-content>
+<div mat-dialog-actions>
+  <button mat-button color="primary" mat-dialog-close>OK</button>
+</div>

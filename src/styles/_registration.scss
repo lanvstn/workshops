@@ -1,0 +1,15 @@
+.confirm-registration {
+    margin: 32px 0;
+}
+
+.mat-horizontal-stepper-content .workshop-cards  {
+    margin-top: 10px;
+
+    .mat-expansion-panel {
+        width: 100%;
+    }
+
+    .mat-expansion-panel-body {
+        @extend %flex-container;
+    }
+}

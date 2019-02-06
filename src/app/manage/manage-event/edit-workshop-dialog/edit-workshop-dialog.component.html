@@ -1,0 +1,25 @@
+<form [formGroup]="editForm" (ngSubmit)="saveWorkshop()">
+  <h1 mat-dialog-title>Workshop wijzigen</h1>
+  <div mat-dialog-content>
+  <mat-form-field>
+    <input matInput placeholder="Titel" formControlName="title">
+  </mat-form-field>
+  <mat-form-field>
+      <input matInput placeholder="Moment" formControlName="moment">
+  </mat-form-field>
+  <mat-form-field>
+      <textarea matInput placeholder="Beschrijving" formControlName="description"></textarea>
+  </mat-form-field>
+  <mat-form-field>
+      <input matInput placeholder="Maximum inschrijvingen" formControlName="limit">
+  </mat-form-field>
+  <mat-form-field>
+      <input matInput placeholder="Doelgroep" formControlName="targetGroup">
+  </mat-form-field>
+
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button color="primary" type="submit" [disabled]="!editForm.valid">Opslaan</button>
+    <button mat-button color="error" mat-dialog-close >Annuleren</button>
+  </div>
+</form>

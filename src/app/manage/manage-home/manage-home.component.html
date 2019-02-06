@@ -1,0 +1,37 @@
+<mat-toolbar class="mat-toolbar mat-toolbar-sub">
+  <h1>Beheer: Lijst van evenementen</h1>
+</mat-toolbar>
+<div class="content-container" *ngIf="authService.currentUser.permission > 10 else loginBlock">
+  <div class="workshop-cards">
+    <mat-card *ngFor="let event of events">
+      <mat-card-title>{{ event.name }}</mat-card-title>
+      <mat-card-content>
+        <div *ngIf="event.available; then available else unavailable"></div>
+        <ng-template #available>
+          Registraties open
+        </ng-template>
+        <ng-template #unavailable>
+          Registraties gesloten
+        </ng-template>
+      </mat-card-content>
+      <mat-card-actions>
+        <div >
+          <button mat-button color="primary" (click)="openEvent(event.id)">Openen</button>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+    <mat-card class="add-card">
+      <mat-card-content>
+          <button mat-button color="primary" (click)="newEvent()"><i class="material-icons md-light md-48">add</i></button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+<div>
+  <ng-template #loginBlock>
+    <div class="content-container" >
+      <h2>Login</h2>
+      <app-login [parentComponent]="this" [isAdminLogin]="1"></app-login>
+    </div>
+  </ng-template>
+</div>

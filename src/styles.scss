@@ -1,0 +1,22 @@
+// default styles.css rules
+html, body { height: 100%; }
+body { margin: 0; padding: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+// angular material
+@import 'styles/materialtheme';
+
+// shared css properties
+@import 'styles/extends';
+
+// overrides on default angular-material elements
+@import 'styles/angular-material-overrides';
+
+// base app style
+@import 'styles/app';
+
+// styles specific to one part of the application
+@import 'styles/manage';
+@import 'styles/registration';
+
+// make it work on small screens
+@import 'styles/responsive';

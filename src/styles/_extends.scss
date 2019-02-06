@@ -1,0 +1,10 @@
+%buttons-right {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+%flex-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}

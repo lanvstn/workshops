@@ -1,0 +1,16 @@
+<form [ngSwitch]="authMethod" [formGroup]="authForm" (ngSubmit)="auth()">
+  <!-- Switch case needs to be in double quotes, translating to authmethod==='key' -->
+  <div *ngSwitchCase="'key'">
+    <p>
+      <mat-form-field>
+        <input matInput type="password" placeholder="toegangscode" formControlName="credential">
+      </mat-form-field>
+    </p>
+  </div>
+  <div *ngSwitchDefault>
+    Failed to retrieve auth method.
+  </div>
+  <p>
+    <button mat-raised-button color="accent" type="submit" [disabled]="!authForm.valid">Aanmelden</button>
+  </p>
+</form>

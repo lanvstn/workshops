@@ -1,0 +1,89 @@
+<mat-toolbar class="mat-toolbar mat-toolbar-sub">
+  <h1>{{ event.name }}</h1>
+</mat-toolbar>
+<mat-horizontal-stepper class="content-container" linear="true" #stepper>
+  <mat-step editable="false" completed="false" #loginStep>
+    <ng-template matStepLabel>Welkom</ng-template>
+    <p>
+      Dit is de inschrijvingsapplicatie voor {{ event.name }}. Je zal in de volgende stap workshops kunnen kiezen.
+    </p>
+    <p>
+      Meld je eerst aan zodat we weten wie je bent.
+    </p>
+    <p>
+      <app-login [parentComponent]="this" [isAdminLogin]="0"></app-login>
+    </p>
+  </mat-step>
+  <mat-step editable="false" completed="false" #choiceStep>
+    <ng-template matStepLabel>Workshops kiezen</ng-template>
+    <mat-accordion>
+      <div *ngFor="let workshopMoment of workshopsByMoment; index as i; first as isFirst" class="workshop-cards">
+        <mat-expansion-panel [expanded]="workshopSelectedStep === i">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+                {{ workshopMoment[0].moment }}
+            </mat-panel-title>
+            <mat-panel-description>
+              <span *ngIf="getSelectedWorkshops(workshopMoment[0].moment) as selectedMomentWorkshops;">{{(selectedMomentWorkshops[0])?.title}}</span>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <mat-card *ngFor="let workshop of workshopMoment">
+            <mat-card-title>{{ workshop.title }}</mat-card-title>
+            <mat-card-content>{{ workshop.description }}</mat-card-content>
+            <div class="space"></div>
+            <mat-card-actions>
+              <div class="mat-card-actions-content">
+              <div *ngIf="workshop._selectable; then selectable; else notSelectable"></div>
+              <ng-template #selectable>
+                <div *ngIf="!workshop._selected; then selectButton; else deselectButton"></div>
+                <ng-template #selectButton>
+                    <div class="registration-add">
+                    <button mat-button color="primary" (click)="addToWorkshopSelection(workshop, 'new'); nextWorkshopSelectionStep()">Selecteren</button>
+                  </div>
+                </ng-template>
+                <ng-template #deselectButton>
+                    <div *ngIf="workshop._selectionOrigin==='inclusiveLink'; then autoSelected; else normalSelected"></div>
+                    <ng-template #autoSelected>
+                      <div class="registration-add">
+                        <button mat-button color="accent" (click)="deleteFromWorkshopSelection(workshop)">Automatisch geselecteerd <i class="material-icons">check_circle</i></button>
+                      </div>
+                    </ng-template>
+                    <ng-template #normalSelected>
+                  <div class="registration-add">
+                    <button mat-button color="accent" (click)="deleteFromWorkshopSelection(workshop)">Geselecteerd <i class="material-icons">check_circle</i></button>
+                  </div>
+                </ng-template>
+              </ng-template>
+                </ng-template>
+
+              <ng-template #notSelectable>
+                  <div class="registration-add">
+                    <button mat-button disabled color="primary">Onbeschikbaar <i class="material-icons">highlight_off</i></button>
+                  </div>
+                </ng-template>
+              
+              <div class="registration-count">
+                {{ workshop._registrationCount }}/{{ workshop.limit }}
+              </div>
+              </div>
+            </mat-card-actions>
+          </mat-card>
+        </mat-expansion-panel>
+      </div>
+
+    </mat-accordion>
+      
+    <div class="confirm-registration">
+        <button mat-raised-button color="accent" [disabled]="!event.available || !complete" (click)="confirm()">Bevestigen</button>
+        <span *ngIf="event.available && !complete"> Kies een workshop voor elk moment.</span>
+    </div>
+  </mat-step>
+  <mat-step editable="false" completed="false">
+    <ng-template matStepLabel>Klaar</ng-template>
+    <p>Je bent ingeschreven voor volgende workshops:</p>
+    <ul>
+      <li *ngFor="let workshop of registeredWorkshops">{{workshop.moment}}: {{workshop.title}}</li>
+    </ul>
+    <button mat-button color="primary" (click)="authService.logout()">Afmelden</button>
+  </mat-step>
+</mat-horizontal-stepper>

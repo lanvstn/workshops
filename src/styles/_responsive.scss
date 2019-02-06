@@ -1,0 +1,56 @@
+// Media queries based on page layout, not real devices.
+
+@media only screen and (max-width: 1200px) {
+    .content-container {
+        margin: 32px 20px 0 20px;
+        width: 100%;
+
+        // Work around issue with text falling off page for some reason
+        box-sizing: border-box;
+        padding-right: 20px;
+    }
+
+    mat-toolbar.mat-toolbar {
+        padding: 0 20px;
+    }
+
+    // manage
+    .validation-hint {
+        display: block;
+        width: 100%;
+    }
+
+    // registration
+    body .mat-horizontal-stepper-header,
+    body .mat-horizontal-content-container {
+        padding: 0 50px 0 0;
+    }
+}
+
+@media only screen and (max-width: 900px) {
+    .workshop-cards .mat-card {
+        flex-basis: 250px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .workshop-cards .mat-card {
+        flex-basis: 80%;
+    }
+
+    // manage
+    .alt-row .mat-form-field {
+        width: 80%;
+    }
+
+    // registration
+    body .mat-horizontal-stepper-header-container {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 350px) {
+    .alt-row .mat-form-field {
+        width: 75%; // Delete buttons moves to next row
+    }
+}

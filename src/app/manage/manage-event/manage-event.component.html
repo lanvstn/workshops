@@ -1,0 +1,148 @@
+<mat-toolbar class="mat-toolbar mat-toolbar-sub">
+    <h1>Beheer: {{ event.name }}</h1>
+</mat-toolbar>
+<div class="content-container">
+  <section class="manage-section manage-settings">
+    <div class="manage-settings-full-row">
+      <h2>Instellingen</h2>
+
+      <form [formGroup]="editEventInfoForm" (ngSubmit)="saveEventInfo()">
+        <div>
+          <mat-form-field>
+            <input matInput placeholder="Titel" formControlName="title">
+          </mat-form-field>
+          <span *ngIf="!editEventInfoForm.valid" class="validation-hint">Enkel letters, cijfers en streepjes. Geen spaties toegelaten, want deze naam komt in de link.</span>
+        </div>
+
+        <p>
+          <b>Registratielink: </b>
+          <a [href]="registrationURL" target="_blank">{{registrationURL}}</a>
+        </p>
+
+        <div class="manage-settings-buttons">
+          <button mat-raised-button color="primary" type="submit" [disabled]="!editEventInfoForm.valid">
+            <i class="material-icons">save</i> Titel opslaan
+          </button> 
+          <div *ngIf="event.available; then closeEventButton; else openEventButton"></div>
+          <ng-template #closeEventButton>
+            <button mat-raised-button type="button" color="accent" id="eventAvailableButton" (click)="setAvailable(false)">
+              <i class="material-icons">lock</i> Registraties afsluiten
+            </button>
+          </ng-template>
+          <ng-template #openEventButton>
+            <button mat-raised-button type="button" color="warn" id="eventAvailableButton" (click)="setAvailable(true)">
+              <i class="material-icons">lock</i> Registraties openen
+            </button>
+          </ng-template>
+        </div>
+      </form>
+    </div>
+  </section>
+  <mat-divider></mat-divider>
+  <section class="manage-section manage-settings">
+    <div class="manage-column">
+      <h3>Studenten</h3>
+      <p>
+        <button mat-raised-button color="primary" [disabled]="event.available" (click)="uploadLlist()"><i class="material-icons">cloud_upload</i> Upload studentenlijst</button>
+        <button mat-button color="primary" (click)="dlStartLlist()"><i class="material-icons">insert_drive_file</i> Startbestand</button>
+      </p>
+
+      <p>
+        <button mat-raised-button color="primary" (click)="dlLlist()"><i class="material-icons">save_alt</i> Download studentenlijst</button>
+        <button mat-button color="primary" (click)="showLlist()"><i class="material-icons">search</i> Studenten tonen</button>
+      </p>
+    </div>
+    <div class="manage-column">
+      <h3>Registraties</h3>
+      <p>
+        <button mat-raised-button color="primary" [disabled]="event.available" (click)="dlRegistrations()"><i class="material-icons">save_alt</i> Registraties per workshop</button>
+      </p>
+      <p>
+        <button mat-button color="primary" (click)="showNoRegistrations()"><i class="material-icons">search</i> Studenten zonder registratie tonen</button>
+      </p>
+    </div>
+  </section>
+  <mat-divider></mat-divider>
+  <section class="manage-section">
+    <h2>Overzicht</h2>
+    <div class="workshop-links">
+      <h3>Links</h3>
+      <p>
+        Hier kan je workshops met elkaar verbinden op twee verschillende manieren. De links gelden automatisch voor beide richtingen.
+      </p>
+      <ul>
+        <li>Inclusief: Als A gekozen is <em>moet</em> B ook gekozen worden</li>
+        <li>Exclusief: Als A gekozen is <em>mag</em> B <em>niet</em> gekozen worden</li>
+      </ul>
+      <p>
+        Let goed op bij het maken van links zodat er geen onmogelijke combinaties ontstaan, bijvoorbeeld (incl. A-B) + (incl. A-C) waarbij B en C op hetzelfde moment zijn.
+      </p>
+      <div class="alt-rows">
+        <div class="alt-row" *ngFor="let workshop_link of workshop_links">
+          <mat-form-field>
+            <mat-select [(ngModel)]="workshop_link.workshop1" required>
+              <mat-option *ngFor="let workshop of event.workshops" [value]="workshop">{{workshop.title}}</mat-option>
+            </mat-select>
+          </mat-form-field> 
+          <i class="material-icons">link</i> 
+          <mat-form-field>
+            <mat-select [(ngModel)]="workshop_link.workshop2" required>
+              <mat-option *ngFor="let workshop of event.workshops" [value]="workshop">{{workshop.title}}</mat-option>
+            </mat-select>
+          </mat-form-field> 
+          <i class="material-icons">chevron_right</i> 
+          <mat-form-field>
+            <mat-select [(ngModel)]="workshop_link.link_type" required>
+              <mat-option value="exclusive">Exclusief</mat-option>
+              <mat-option value="inclusive">Inclusief</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button mat-button color="primary" (click)="deleteWorkshopLink(workshop_link)">
+              <i class="material-icons">delete</i>
+          </button> 
+        </div>
+        <div class="alt-row">
+          <button mat-raised-button color="primary" (click)="saveWorkshopLinks()">
+            <i class="material-icons">save</i> Links opslaan
+          </button>
+          <button mat-button color="primary" (click)="newWorkshopLink()">
+            <i class="material-icons">add</i> nieuwe link maken
+          </button> 
+        </div>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="workshop-cards">
+      <h3>Workshops</h3>
+      <mat-card *ngFor="let workshop of event.workshops">
+        <div *ngIf="workshop._editMode; then editMode; else viewMode"></div>
+        <ng-template #viewMode>
+          <mat-card-title >{{ workshop.title }}</mat-card-title>
+          <mat-card-content>
+            <p><b>Moment: </b>{{ workshop.moment }}</p>
+            <p><b>Beschrijving: </b>{{ workshop.description }}</p>
+            <p><b>Registraties: </b>{{ workshop._registrationCount }} / {{ workshop.limit }}</p>
+            <p><b>Doelgroep: </b>{{ workshop.targetGroup }}</p>
+          </mat-card-content>
+          <div class="space"></div>
+          <mat-card-actions>
+            <div class="mat-card-actions-content">
+              <div>
+                <button mat-mini-fab color="accent" (click)="deleteWorkshop(workshop)"><i class="material-icons">delete</i></button>
+                <button mat-mini-fab color="accent" (click)="editWorkshop(workshop.id)"><i class="material-icons">edit</i></button>
+              </div>
+            </div>
+          </mat-card-actions>
+        </ng-template>
+        <ng-template #editMode>
+          X
+        </ng-template>
+      </mat-card>
+      <mat-card class="add-card">
+        <mat-card-content>
+            <button mat-button color="primary" (click)="newWorkshop()"><i class="material-icons md-light md-48">add</i></button>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </section>
+</div>

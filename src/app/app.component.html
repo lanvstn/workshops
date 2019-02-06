@@ -1,0 +1,39 @@
+<nav>
+    <mat-toolbar class="mat-toolbar mat-toolbar-main" color="primary">
+        <div class="nav-left">
+            <h1>Workshops inschrijvingen</h1>
+        </div>
+        <div class="nav-space"></div>
+        <div class="nav-right">
+            <div *ngIf="authService.currentUser.id; then loggedIn; else loggedOut"></div>
+            <ng-template #loggedIn>
+                <mat-menu #userMenu>
+                    <button *ngIf="authService.currentUser.permission > 10" mat-menu-item routerLink="/manage">Beheer</button>
+                    <button *ngIf="authService.currentUser.permission > 10" mat-menu-item (click)="changeAdminPassword()">Wachtwoord wijzigen</button>
+                    <button mat-menu-item (click)="authService.logout()">Afmelden</button>
+                </mat-menu>
+                <button mat-button [matMenuTriggerFor]="userMenu">
+                    <mat-icon>account_circle</mat-icon>
+                    {{ authService.currentUser.full_name }}
+                </button>
+            </ng-template>
+
+            <ng-template #loggedOut>
+                <mat-menu #loggedOutMenu>
+                    <button mat-menu-item routerLink="/manage">Beheer</button>
+                </mat-menu>
+                <button mat-button [matMenuTriggerFor]="loggedOutMenu">
+                    <mat-icon>account_circle</mat-icon>
+                    Niet aangemeld
+                </button>
+            </ng-template>
+        </div>
+    </mat-toolbar>
+</nav>
+
+<router-outlet></router-outlet>
+
+<footer>
+    <p>een project van lander visterin</p>
+    <p><button mat-button color="primary" routerLink="/">info</button></p>
+</footer>

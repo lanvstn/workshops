@@ -1,0 +1,106 @@
+body {
+    overflow-x: hidden;
+}
+
+h1,h2,h3 {
+    width: 100%;
+}
+
+.material-icons.md-18 { font-size: 18px; }
+.material-icons.md-24 { font-size: 24px; }
+.material-icons.md-36 { font-size: 36px; }
+.material-icons.md-48 { font-size: 48px; }
+
+.mat-toolbar.mat-primary {
+    background-color: $primary-dark-color;
+}
+
+.mat-toolbar-main {
+    @extend %flex-container;
+    @include mat-elevation(6);
+    z-index: 2;
+    position: relative;
+
+    .mat-button {
+        padding: 0;
+    }
+}
+
+.mat-toolbar-sub {
+    background-color: whitesmoke;
+}
+
+.nav-space {
+    flex-grow: 1;
+}
+
+.content-container {
+    margin: 32px auto 0 auto;
+    width: 80%;
+
+    .manage-section:first-of-type {
+        padding-top: 0;
+    }
+}
+
+.workshop-cards {
+    @extend %flex-container;
+
+    margin:-10px; // space between cards trick
+
+    h2, h3 {
+        width: 100%; 
+        margin: 32px 10px 10px 10px; // space between cards trick
+    }
+
+    mat-card {
+        margin: 10px; // space between cards trick
+        flex-basis: 400px;
+        display: flex;
+        flex-direction: column;
+
+        .space {
+            display: block;
+            flex-grow: 1;
+        }
+
+        .mat-card-actions-content {
+            @extend %buttons-right;
+            justify-content: space-between;
+
+            .registration-count {
+                line-height: 36px;
+                margin-left: 10px;
+            }
+
+            .mat-mini-fab {
+                margin: 0 10px 10px 5px;
+            }
+        }
+    }
+}
+
+.notify-normal {
+    background-color: $accent-color;
+    color: black;
+}
+
+.notify-error {
+    background-color: $error-color;
+    color: white;
+
+    .mat-simple-snackbar-action {
+        color: white;
+    }
+}
+
+footer {
+    width: 100%;
+    margin-top: 64px;
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+    color: #333;
+
+    p {
+        text-align: center;
+    }
+}
