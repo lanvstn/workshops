@@ -15,21 +15,38 @@ It was made as a school project and I am not maintaining or supporting this.
 - Import/export users as CSV
 - Export registrations as Excel with a worksheet for every workshop
 
-## Installing in production
+## Installation guide
 
-Install [Node.js](https://nodejs.org/en/download/).
+Things you need before you can start:
 
-Clone this repo, then and install dependencies:
+* Ubuntu Server 18.04 (other Linux distros should work as well)
+* Docker on your server ([instructions for Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-using-the-repository))
+* This repo
 
-    $ npm install
+First, set the corrent URL for the API in `src/environments/environment.prod.ts`.
 
-Build the project.
+```typescript
+export const environment = {
+  production: true,
+  apiEndpoint: "https://api_url_here"
+};
+```
 
-    $ ng build --prod
+Build the docker image
 
-Install some webserver to serve static files, like nginx. Then copy the files from `dist/` to the directory your server serves from.
+```
+docker build -t workshops-app .
+```
 
-Now read the API installation instructions.
+Start the container and set it to always restart
+
+```
+docker run -d -p 8080:8080 --name workshops-app workshops-app
+```
+
+You should be able to see the info page at http://localhost:8080
+
+Now continue to the workshops-api installation instructions.
 
 ## Running for development and testing
 
