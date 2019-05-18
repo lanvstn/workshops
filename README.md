@@ -23,7 +23,7 @@ Things you need before you can start:
 * Docker on your server ([instructions for Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-using-the-repository))
 * This repo
 
-First, set the corrent URL for the API in `src/environments/environment.prod.ts`.
+First, set the correct URL for the API in `src/environments/environment.prod.ts`.
 
 ```typescript
 export const environment = {
