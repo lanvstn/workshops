@@ -52,7 +52,7 @@ export class AuthService {
         },
         error => {
           if (error.status == 401) {
-            reject("Failed to authenticate");
+            reject("Foute login code. Probeer het opnieuw.");
           }
           else {
             reject(`Server error, status code: ${error.status}`);
