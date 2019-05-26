@@ -28,7 +28,8 @@ First, set the correct URL for the API in `src/environments/environment.prod.ts`
 ```typescript
 export const environment = {
   production: true,
-  apiEndpoint: "https://api_url_here"
+  apiEndpoint: "https://api_url_here", // <-- change this
+  csvSeparator: ';'
 };
 ```
 

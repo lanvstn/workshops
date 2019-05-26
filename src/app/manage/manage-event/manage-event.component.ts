@@ -12,6 +12,7 @@ import { User } from 'src/app/models/user';
 import { WorkshopLink } from 'src/app/models/workshop-link';
 import { AvailabilityDialogComponent } from './availability-dialog/availability-dialog.component';
 import { NotifyService } from 'src/app/services/notify.service';
+import { environment } from "../../../environments/environment";
 
 @Component({
   selector: 'app-manage-event',
@@ -162,7 +163,7 @@ export class ManageEventComponent implements OnInit {
               const newUser = new User();
 
               // Fill the new user object with data from the input row
-              const splitRow = uploadedRow.split(',');
+              const splitRow = uploadedRow.split(environment.csvSeparator);
 
               // Don't do anything if row has empty values
               if (splitRow[0]) {
@@ -197,8 +198,8 @@ export class ManageEventComponent implements OnInit {
 
   dlStartLlist(): void {
     const rows = [
-      "Naam,Klas,Doelgroep,Identificatie (laat leeg)",
-      "Voorbeeld naam,1A,intern,"
+      ["Naam", "Klas", "Doelgroep", "Identificatie (laat leeg)"].join(environment.csvSeparator),
+      ["Voorbeeld naam", "1A", "intern", ""].join(environment.csvSeparator)
     ]
 
     const csvContent = rows.join('\r\n');
@@ -210,7 +211,7 @@ export class ManageEventComponent implements OnInit {
     const rows = [];
     this.apiService.getUserList(this.event.id).subscribe(users => {
       // CSV headers
-      const headers = ["Naam,Klas,Doelgroep,Identificatie"];
+      const headers = [["Naam", "Klas", "Doelgroep", "Identificatie"].join(environment.csvSeparator)];
 
       // CSV content
       const rows = headers.concat(this.usersToCSVRows(users));
@@ -334,7 +335,7 @@ export class ManageEventComponent implements OnInit {
         user.user_class,
         user.targetGroup,
         user.identity
-      ].join(','));
+      ].join(environment.csvSeparator));
     });
 
     return rows;
