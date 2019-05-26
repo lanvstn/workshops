@@ -1,6 +1,6 @@
 # Build stage
 # =============================================================================
-FROM node:lts-slim AS builder
+FROM node:10 AS builder
 
 WORKDIR /builder
 COPY . .

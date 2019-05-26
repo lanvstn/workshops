@@ -60,3 +60,5 @@ Clone this repo, install dependencies and run the dev server:
 
 Go to `http://localhost:4200/`.
 
+*You need Node.js v10 for the npm install to work. It's broken on v12.*
+
